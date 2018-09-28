@@ -35,7 +35,6 @@ var Input = (function() {
     this.$input = $(o.input);
 
     this.$input.attr({
-      'aria-activedescendant': '',
       'aria-owns': this.$input.attr('id') + '_listbox',
       role: 'combobox',
       'aria-readonly': 'true',

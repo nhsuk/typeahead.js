@@ -4,6 +4,7 @@
 * Ensure `aria-activedescendant` is set based on id of menu item [#185](https://github.com/corejavascript/typeahead.js/pull/185)
 * Ensure `aria-owns` relates to the listbox
 * Make it clearer the navigation with keys is for keyboard users
+* Do not set `aria-activedescendant` on initial construction of input
 
 ### 1.2.0 September 25, 2017
 * Fix various typos [#137](https://github.com/corejavascript/typeahead.js/pull/137)

@@ -16,188 +16,210 @@ describe('$plugin', function() {
     });
   });
 
-  it('#enable should enable the typeahead', function() {
-    this.$input.typeahead('disable');
-    expect(this.$input.typeahead('isEnabled')).toBe(false);
+  describe('#enable', function() {
+    it('should enable the typeahead', function() {
+      this.$input.typeahead('disable');
+      expect(this.$input.typeahead('isEnabled')).toBe(false);
 
-    this.$input.typeahead('enable');
-    expect(this.$input.typeahead('isEnabled')).toBe(true);
+      this.$input.typeahead('enable');
+      expect(this.$input.typeahead('isEnabled')).toBe(true);
+    });
   });
 
-  it('#disable should disable the typeahead', function() {
-    this.$input.typeahead('enable');
-    expect(this.$input.typeahead('isEnabled')).toBe(true);
+  describe('#disable', function() {
+    it('should disable the typeahead', function() {
+      this.$input.typeahead('enable');
+      expect(this.$input.typeahead('isEnabled')).toBe(true);
 
-    this.$input.typeahead('disable');
-    expect(this.$input.typeahead('isEnabled')).toBe(false);
+      this.$input.typeahead('disable');
+      expect(this.$input.typeahead('isEnabled')).toBe(false);
+    });
   });
 
-  it('#activate should activate the typeahead', function() {
-    this.$input.typeahead('deactivate');
-    expect(this.$input.typeahead('isActive')).toBe(false);
+  describe('#activate', function() {
+    it('should activate the typeahead', function() {
+      this.$input.typeahead('deactivate');
+      expect(this.$input.typeahead('isActive')).toBe(false);
 
-    this.$input.typeahead('activate');
-    expect(this.$input.typeahead('isActive')).toBe(true);
+      this.$input.typeahead('activate');
+      expect(this.$input.typeahead('isActive')).toBe(true);
+    });
+
+    it('should fail to activate the typeahead if disabled', function() {
+      this.$input.typeahead('deactivate');
+      expect(this.$input.typeahead('isActive')).toBe(false);
+      this.$input.typeahead('disable');
+
+      this.$input.typeahead('activate');
+      expect(this.$input.typeahead('isActive')).toBe(false);
+    });
   });
 
-  it('#activate should fail to activate the typeahead if disabled', function() {
-    this.$input.typeahead('deactivate');
-    expect(this.$input.typeahead('isActive')).toBe(false);
-    this.$input.typeahead('disable');
+  describe('#deactivate', function() {
+    it('should deactivate the typeahead', function() {
+      this.$input.typeahead('activate');
+      expect(this.$input.typeahead('isActive')).toBe(true);
 
-    this.$input.typeahead('activate');
-    expect(this.$input.typeahead('isActive')).toBe(false);
+      this.$input.typeahead('deactivate');
+      expect(this.$input.typeahead('isActive')).toBe(false);
+    });
   });
 
-  it('#deactivate should deactivate the typeahead', function() {
-    this.$input.typeahead('activate');
-    expect(this.$input.typeahead('isActive')).toBe(true);
+  describe('#open', function() {
+    it('should open the menu', function() {
+      this.$input.typeahead('close');
+      expect(this.$input.typeahead('isOpen')).toBe(false);
 
-    this.$input.typeahead('deactivate');
-    expect(this.$input.typeahead('isActive')).toBe(false);
+      this.$input.typeahead('open');
+      expect(this.$input.typeahead('isOpen')).toBe(true);
+    });
   });
 
-  it('#open should open the menu', function() {
-    this.$input.typeahead('close');
-    expect(this.$input.typeahead('isOpen')).toBe(false);
+  describe('#close', function() {
+    it('should close the menu', function() {
+      this.$input.typeahead('open');
+      expect(this.$input.typeahead('isOpen')).toBe(true);
 
-    this.$input.typeahead('open');
-    expect(this.$input.typeahead('isOpen')).toBe(true);
+      this.$input.typeahead('close');
+      expect(this.$input.typeahead('isOpen')).toBe(false);
+    });
   });
 
-  it('#close should close the menu', function() {
-    this.$input.typeahead('open');
-    expect(this.$input.typeahead('isOpen')).toBe(true);
+  describe('#select', function() {
+    it('#select should select selectable', function() {
+      var $el;
 
-    this.$input.typeahead('close');
-    expect(this.$input.typeahead('isOpen')).toBe(false);
+      // activate and set val to render some selectables
+      this.$input.typeahead('activate');
+      this.$input.typeahead('val', 'o');
+      $el = $('.tt-selectable').first();
+
+      expect(this.$input.typeahead('select', $el)).toBe(true);
+      expect(this.$input.typeahead('val')).toBe('1');
+    });
+
+    it('#select should return false if not valid selectable', function() {
+      var body;
+
+      // activate and set val to render some selectables
+      this.$input.typeahead('activate');
+      this.$input.typeahead('val', 'o');
+      body = document.body;
+
+      expect(this.$input.typeahead('select', body)).toBe(false);
+    });
+
+    it('should return false if not valid selectable', function() {
+      var body;
+
+      // activate and set val to render some selectables
+      this.$input.typeahead('activate');
+      this.$input.typeahead('val', 'o');
+      body = document.body;
+
+      expect(this.$input.typeahead('select', body)).toBe(false);
+    });
   });
 
-  it('#select should select selectable', function() {
-    var $el;
+  describe('#autocomplete', function() {
+    it('should autocomplete to selectable', function() {
+      var $el;
 
-    // activate and set val to render some selectables
-    this.$input.typeahead('activate');
-    this.$input.typeahead('val', 'o');
-    $el = $('.tt-selectable').first();
+      // activate and set val to render some selectables
+      this.$input.typeahead('activate');
+      this.$input.typeahead('val', 'o');
+      $el = $('.tt-selectable').first();
 
-    expect(this.$input.typeahead('select', $el)).toBe(true);
-    expect(this.$input.typeahead('val')).toBe('1');
+      expect(this.$input.typeahead('autocomplete', $el)).toBe(true);
+      expect(this.$input.typeahead('val')).toBe('1');
+    });
+
+    it('should return false if not valid selectable', function() {
+      var body;
+
+      // activate and set val to render some selectables
+      this.$input.typeahead('activate');
+      this.$input.typeahead('val', 'o');
+      body = document.body;
+
+      expect(this.$input.typeahead('autocomplete', body)).toBe(false);
+    });
   });
 
-  it('#select should return false if not valid selectable', function() {
-    var body;
+  describe('#moveCursor', function() {
+    it('should move cursor', function() {
+      var $el;
 
-    // activate and set val to render some selectables
-    this.$input.typeahead('activate');
-    this.$input.typeahead('val', 'o');
-    body = document.body;
+      // activate and set val to render some selectables
+      this.$input.typeahead('activate');
+      this.$input.typeahead('val', 'o');
+      $el = $('.tt-selectable').first();
 
-    expect(this.$input.typeahead('select', body)).toBe(false);
+      expect($el).not.toHaveClass('tt-cursor');
+      expect(this.$input.typeahead('moveCursor', 1)).toBe(true);
+      expect($el).toHaveClass('tt-cursor');
+    });
   });
 
-  it('#autocomplete should autocomplete to selectable', function() {
-    var $el;
+  describe('#val()', function() {
+    it('#val() should typeahead value of element', function() {
+      var $els;
 
-    // activate and set val to render some selectables
-    this.$input.typeahead('activate');
-    this.$input.typeahead('val', 'o');
-    $el = $('.tt-selectable').first();
+      this.$input.typeahead('val', 'foo');
+      $els = this.$input.add('<div>');
 
-    expect(this.$input.typeahead('autocomplete', $el)).toBe(true);
-    expect(this.$input.typeahead('val')).toBe('1');
+      expect($els.typeahead('val')).toBe('foo');
+    });
+
+    it('#val(q) should set query', function() {
+      this.$input.typeahead('val', 'foo');
+      expect(this.$input.typeahead('val')).toBe('foo');
+    });
+
+    it('#val(q) should coerce null and undefined to empty string', function() {
+      this.$input.typeahead('val', null);
+      expect(this.$input.typeahead('val')).toBe('');
+
+      this.$input.typeahead('val', undefined);
+      expect(this.$input.typeahead('val')).toBe('');
+    });
   });
 
-  it('#autocomplete should return false if not valid selectable', function() {
-    var body;
+  describe('#destroy', function() {
+    it('should revert modified attributes', function() {
+      expect(this.$input).toHaveAttr('dir');
+      expect(this.$input).toHaveAttr('spellcheck');
+      expect(this.$input).toHaveAttr('style');
 
-    // activate and set val to render some selectables
-    this.$input.typeahead('activate');
-    this.$input.typeahead('val', 'o');
-    body = document.body;
+      this.$input.typeahead('destroy');
 
-    expect(this.$input.typeahead('autocomplete', body)).toBe(false);
-  });
+      expect(this.$input).not.toHaveAttr('dir');
+      expect(this.$input).not.toHaveAttr('spellcheck');
+      expect(this.$input).not.toHaveAttr('style');
+    });
 
-  it('#moveCursor should move cursor', function() {
-    var $el;
+    it('should remove data', function() {
+      expect(this.$input.data('tt-www')).toBeTruthy();
+      expect(this.$input.data('tt-attrs')).toBeTruthy();
+      expect(this.$input.data('tt-typeahead')).toBeTruthy();
 
-    // activate and set val to render some selectables
-    this.$input.typeahead('activate');
-    this.$input.typeahead('val', 'o');
-    $el = $('.tt-selectable').first();
+      this.$input.typeahead('destroy');
 
-    expect($el).not.toHaveClass('tt-cursor');
-    expect(this.$input.typeahead('moveCursor', 1)).toBe(true);
-    expect($el).toHaveClass('tt-cursor');
-  });
+      expect(this.$input.data('tt-www')).toBeFalsy();
+      expect(this.$input.data('tt-attrs')).toBeFalsy();
+      expect(this.$input.data('tt-typeahead')).toBeFalsy();
+    });
 
-  it('#select should return false if not valid selectable', function() {
-    var body;
+    it('should remove add classes', function() {
+      expect(this.$input).toHaveClass('tt-input');
+      this.$input.typeahead('destroy');
+      expect(this.$input).not.toHaveClass('tt-input');
+    });
 
-    // activate and set val to render some selectables
-    this.$input.typeahead('activate');
-    this.$input.typeahead('val', 'o');
-    body = document.body;
-
-    expect(this.$input.typeahead('select', body)).toBe(false);
-  });
-
-  it('#val() should typeahead value of element', function() {
-    var $els;
-
-    this.$input.typeahead('val', 'foo');
-    $els = this.$input.add('<div>');
-
-    expect($els.typeahead('val')).toBe('foo');
-  });
-
-  it('#val(q) should set query', function() {
-    this.$input.typeahead('val', 'foo');
-    expect(this.$input.typeahead('val')).toBe('foo');
-  });
-
-  it('#val(q) should coerce null and undefined to empty string', function() {
-    this.$input.typeahead('val', null);
-    expect(this.$input.typeahead('val')).toBe('');
-
-    this.$input.typeahead('val', undefined);
-    expect(this.$input.typeahead('val')).toBe('');
-  });
-
-  it('#destroy should revert modified attributes', function() {
-    expect(this.$input).toHaveAttr('dir');
-    expect(this.$input).toHaveAttr('spellcheck');
-    expect(this.$input).toHaveAttr('style');
-
-    this.$input.typeahead('destroy');
-
-    expect(this.$input).not.toHaveAttr('dir');
-    expect(this.$input).not.toHaveAttr('spellcheck');
-    expect(this.$input).not.toHaveAttr('style');
-  });
-
-  it('#destroy should remove data', function() {
-    expect(this.$input.data('tt-www')).toBeTruthy();
-    expect(this.$input.data('tt-attrs')).toBeTruthy();
-    expect(this.$input.data('tt-typeahead')).toBeTruthy();
-
-    this.$input.typeahead('destroy');
-
-    expect(this.$input.data('tt-www')).toBeFalsy();
-    expect(this.$input.data('tt-attrs')).toBeFalsy();
-    expect(this.$input.data('tt-typeahead')).toBeFalsy();
-  });
-
-  it('#destroy should remove add classes', function() {
-    expect(this.$input).toHaveClass('tt-input');
-    this.$input.typeahead('destroy');
-    expect(this.$input).not.toHaveClass('tt-input');
-  });
-
-  it('#destroy should revert DOM changes', function() {
-    expect($('.twitter-typeahead')).toExist();
-    this.$input.typeahead('destroy');
-    expect($('.twitter-typeahead')).not.toExist();
+    it('should revert DOM changes', function() {
+      expect($('.twitter-typeahead')).toExist();
+      this.$input.typeahead('destroy');
+      expect($('.twitter-typeahead')).not.toExist();
+    });
   });
 });

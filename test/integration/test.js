@@ -65,6 +65,8 @@ describe('jquery-typeahead.js', function() {
       hint = yield this.elementByClassName('tt-hint');
       dropdown = yield this.elementByClassName('tt-menu');
 
+      expect(yield dropdown.attr('id')).to.equal('expected-id');
+
       done();
     });
   });
@@ -86,6 +88,13 @@ describe('jquery-typeahead.js', function() {
       done();
     });
   });
+
+  // it('should have an id', function(done) {
+  //   driver.run(function*() {
+  //   expect(yield dropdown.attr('id')).to.equal('expected-id');
+  //   done();
+  //   });
+  // });
 
   describe('on blur', function() {
     it('should close dropdown', function(done) {

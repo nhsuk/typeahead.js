@@ -6,10 +6,10 @@ describe('Menu', function() {
 
     jasmine.Dataset.useMock();
 
-    setFixtures('<div id="menu-fixture"></div>');
+    setFixtures('<div class="menu-fixture"></div>');
 
     $fixture = $('#jasmine-fixtures');
-    this.$node = $fixture.find('#menu-fixture');
+    this.$node = $fixture.find('.menu-fixture');
     this.$node.html(fixtures.html.dataset);
 
     this.view = new Menu({ node: this.$node, datasets: [{}] }, www).bind();

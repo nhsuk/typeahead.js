@@ -29,20 +29,28 @@ var Status = (function () {
   }
   _.mixin(Status.prototype, {
     update: function update(event, suggestions) {
-      var length = suggestions.length;
-      var words;
-      if (length === 1) {
-        words = {
-          result: 'result',
-          is: 'is'
-        };
-      } else {
-        words = {
-          result: 'results',
-          is: 'are'
-        };
+      // The third argument is a boolean representing the state of the request.
+      // If `true`, it is a response else it is a request. Rather than updating
+      // the text on the request, it will only be updated on the response.
+      // Doing this reduces confusion when using a screen reader. Now only when
+      // results have been returned will the text be read.
+      var isResponse = arguments[2];
+      if (isResponse) {
+        var length = suggestions.length;
+        var words;
+        if (length === 1) {
+          words = {
+            result: 'result',
+            is: 'is'
+          };
+        } else {
+          words = {
+            result: 'results',
+            is: 'are'
+          };
+        }
+        this.$el.text(length + ' ' + words.result + ' ' + words.is + ' available. Keyboard users can use up and down arrow keys to navigate.');
       }
-      this.$el.text(length + ' ' + words.result + ' ' + words.is + ' available. Keyboard users can use up and down arrow keys to navigate.');
     },
     cleared: function () {
       this.$el.text('');

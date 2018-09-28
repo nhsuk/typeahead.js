@@ -44,23 +44,33 @@ describe('Status', function() {
   });
 
   describe('when rendered is triggered on the datasets', function() {
+    describe('and the trigger is for a response', function() {
+      it('should update the status text based on number of suggestion', function() {
+        expect(status.$el.text()).toEqual('');
 
-    it('should update the status text based on number of suggestion', function() {
-      expect(status.$el.text()).toEqual('');
+        menu.datasets[0].trigger('rendered', [1, 2, 3], true);
 
-      menu.datasets[0].trigger('rendered', [1, 2, 3]);
+        expect(status.$el.text()).toEqual('3 results are available. Keyboard users can use up and down arrow keys to navigate.');
+      });
 
-      expect(status.$el.text()).toEqual('3 results are available. Keyboard users can use up and down arrow keys to navigate.');
+      it('should use singular conjugations if only one suggestion', function() {
+        expect(status.$el.text()).toEqual('');
+
+        menu.datasets[0].trigger('rendered', [1], true);
+
+        expect(status.$el.text()).toEqual('1 result is available. Keyboard users can use up and down arrow keys to navigate.');
+      });
     });
 
-    it('should use singular conjugations if only one suggestion', function() {
-      expect(status.$el.text()).toEqual('');
+    describe('and the trigger is for a request', function() {
+      it('should not update the status text', function() {
+        expect(status.$el.text()).toEqual('');
 
-      menu.datasets[0].trigger('rendered', [1]);
+        menu.datasets[0].trigger('rendered', [1, 2, 3], false);
 
-      expect(status.$el.text()).toEqual('1 result is available. Keyboard users can use up and down arrow keys to navigate.');
+        expect(status.$el.text()).toEqual('');
+      });
     });
-
   });
 
   describe('when cleared is triggered on the datasets', function() {

@@ -5,6 +5,7 @@
 * Ensure `aria-owns` relates to the listbox
 * Make it clearer the navigation with keys is for keyboard users
 * Do not set `aria-activedescendant` on initial construction of input
+* Additional tests around association between input and menu items
 
 ### 1.2.0 September 25, 2017
 * Fix various typos [#137](https://github.com/corejavascript/typeahead.js/pull/137)

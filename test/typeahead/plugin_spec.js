@@ -3,7 +3,7 @@ describe('$plugin', function() {
   beforeEach(function() {
     var $fixture;
 
-    setFixtures('<input class="test-input" type="text" autocomplete="on">');
+    setFixtures('<input id="inputId" class="test-input" type="text" autocomplete="on">');
 
     $fixture = $('#jasmine-fixtures');
     this.$input = $fixture.find('.test-input');
@@ -182,6 +182,18 @@ describe('$plugin', function() {
 
       this.$input.typeahead('val', undefined);
       expect(this.$input.typeahead('val')).toBe('');
+    });
+  });
+
+  describe('id of the menu div', function() {
+    it('should be the id of the input appended by \'_listbox\'', function() {
+      expect(this.$input['prevObject'].find('.tt-menu')).toHaveId('inputId_listbox');
+    });
+  });
+
+  describe('aria-owns of the input', function() {
+    it('should be the id of the menu', function() {
+      expect(this.$input).toHaveAttr('aria-owns', 'inputId_listbox');
     });
   });
 

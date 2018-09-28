@@ -50,7 +50,7 @@ describe('Status', function() {
 
       menu.datasets[0].trigger('rendered', [1, 2, 3]);
 
-      expect(status.$el.text()).toEqual('3 results are available, use up and down arrow keys to navigate.');
+      expect(status.$el.text()).toEqual('3 results are available. Keyboard users can use up and down arrow keys to navigate.');
     });
 
     it('should use singular conjugations if only one suggestion', function() {
@@ -58,7 +58,7 @@ describe('Status', function() {
 
       menu.datasets[0].trigger('rendered', [1]);
 
-      expect(status.$el.text()).toEqual('1 result is available, use up and down arrow keys to navigate.');
+      expect(status.$el.text()).toEqual('1 result is available. Keyboard users can use up and down arrow keys to navigate.');
     });
 
   });

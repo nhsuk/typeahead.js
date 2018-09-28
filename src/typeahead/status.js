@@ -41,8 +41,8 @@ var Status = (function () {
           result: 'results',
           is: 'are'
         };
-      };
-      this.$el.text(length + ' ' + words.result + ' ' + words.is + ' available, use up and down arrow keys to navigate.');
+      }
+      this.$el.text(length + ' ' + words.result + ' ' + words.is + ' available. Keyboard users can use up and down arrow keys to navigate.');
     },
     cleared: function () {
       this.$el.text('');

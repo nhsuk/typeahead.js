@@ -42,8 +42,6 @@ var Input = (function() {
       'aria-autocomplete': 'list'
     });
 
-    $(www.menu).attr('id', this.$input.attr('id') + '_listbox');
-
     // the query defaults to whatever the value of the input is
     // on initialization, it'll most likely be an empty string
     this.query = this.$input.val();

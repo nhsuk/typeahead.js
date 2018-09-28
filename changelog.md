@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.2.1 September 28, 2018
+* Ensure `aria-activedescendant` is set based on id of menu item [#185](https://github.com/corejavascript/typeahead.js/pull/185)
+* Ensure `aria-owns` relates to the listbox
+* Make it clearer the navigation with keys is for keyboard users
+
 ### 1.2.0 September 25, 2017
 * Fix various typos [#137](https://github.com/corejavascript/typeahead.js/pull/137)
 * Add jQuery 3 support [#102](https://github.com/corejavascript/typeahead.js/pull/102)

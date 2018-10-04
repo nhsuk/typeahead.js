@@ -23,7 +23,7 @@ var WWW = (function() {
 
   return build;
 
-  function build(o) {
+  function build(o, id) {
     var www, classes;
 
     classes = _.mixin({}, defaultClassNames, o);
@@ -31,7 +31,7 @@ var WWW = (function() {
     www = {
       css: buildCss(),
       classes: classes,
-      html: buildHtml(classes),
+      html: buildHtml(classes, id),
       selectors: buildSelectors(classes)
     };
 
@@ -44,10 +44,10 @@ var WWW = (function() {
     };
   }
 
-  function buildHtml(c) {
+  function buildHtml(c, id) {
     return {
       wrapper: '<span class="' + c.wrapper + '"></span>',
-      menu: '<div role="listbox" class="' + c.menu + '"></div>'
+      menu: '<div id="' + id + '_listbox" role="listbox" class="' + c.menu + '"></div>'
     };
   }
 

@@ -27,7 +27,8 @@
       datasets = _.isArray(datasets) ? datasets : [].slice.call(arguments, 1);
 
       o = o || {};
-      www = WWW(o.classNames);
+      var id = $(this).attr('id');
+      www = WWW(o.classNames, id);
 
       return this.each(attach);
 

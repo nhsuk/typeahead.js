@@ -1,15 +1,16 @@
 /*!
- * typeahead.js 1.2.0
- * https://github.com/twitter/typeahead.js
- * Copyright 2013-2017 Twitter, Inc. and other contributors; Licensed MIT
+ * typeahead.js 1.2.1
+ * https://github.com/corejavascript/typeahead.js
+ * Copyright 2013-2018 Twitter, Inc. and other contributors; Licensed MIT
  */
+
 
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
         define([ "jquery" ], function(a0) {
             return factory(a0);
         });
-    } else if (typeof exports === "object") {
+    } else if (typeof module === "object" && module.exports) {
         module.exports = factory(require("jquery"));
     } else {
         factory(root["jQuery"]);
@@ -174,13 +175,13 @@
             highlight: "tt-highlight"
         };
         return build;
-        function build(o) {
+        function build(o, id) {
             var www, classes;
             classes = _.mixin({}, defaultClassNames, o);
             www = {
                 css: buildCss(),
                 classes: classes,
-                html: buildHtml(classes),
+                html: buildHtml(classes, id),
                 selectors: buildSelectors(classes)
             };
             return {
@@ -193,10 +194,10 @@
                 }
             };
         }
-        function buildHtml(c) {
+        function buildHtml(c, id) {
             return {
                 wrapper: '<span class="' + c.wrapper + '"></span>',
-                menu: '<div role="listbox" class="' + c.menu + '"></div>'
+                menu: '<div id="' + id + '_listbox" role="listbox" class="' + c.menu + '"></div>'
             };
         }
         function buildSelectors(classes) {
@@ -490,13 +491,11 @@
             this.$hint = $(o.hint);
             this.$input = $(o.input);
             this.$input.attr({
-                "aria-activedescendant": "",
                 "aria-owns": this.$input.attr("id") + "_listbox",
                 role: "combobox",
                 "aria-readonly": "true",
                 "aria-autocomplete": "list"
             });
-            $(www.menu).attr("id", this.$input.attr("id") + "_listbox");
             this.query = this.$input.val();
             this.queryWhenFocused = this.hasFocus() ? this.query : null;
             this.$overflowHelper = buildOverflowHelper(this.$input);
@@ -896,8 +895,12 @@
                 pending: templates.pending && _.templatify(templates.pending),
                 header: templates.header && _.templatify(templates.header),
                 footer: templates.footer && _.templatify(templates.footer),
-                suggestion: templates.suggestion || suggestionTemplate
+                suggestion: templates.suggestion ? userSuggestionTemplate : suggestionTemplate
             };
+            function userSuggestionTemplate(context) {
+                var template = templates.suggestion;
+                return $(template(context)).attr("id", _.guid());
+            }
             function suggestionTemplate(context) {
                 return $('<div role="option">').attr("id", _.guid()).text(displayFn(context));
             }
@@ -1081,20 +1084,23 @@
         }
         _.mixin(Status.prototype, {
             update: function update(event, suggestions) {
-                var length = suggestions.length;
-                var words;
-                if (length === 1) {
-                    words = {
-                        result: "result",
-                        is: "is"
-                    };
-                } else {
-                    words = {
-                        result: "results",
-                        is: "are"
-                    };
+                var isResponse = arguments[2];
+                if (isResponse) {
+                    var length = suggestions.length;
+                    var words;
+                    if (length === 1) {
+                        words = {
+                            result: "result",
+                            is: "is"
+                        };
+                    } else {
+                        words = {
+                            result: "results",
+                            is: "are"
+                        };
+                    }
+                    this.$el.text(length + " " + words.result + " " + words.is + " available. Keyboard users can use up and down arrow keys to navigate.");
                 }
-                this.$el.text(length + " " + words.result + " " + words.is + " available, use up and down arrow keys to navigate.");
             },
             cleared: function() {
                 this.$el.text("");
@@ -1449,7 +1455,8 @@
                 var www;
                 datasets = _.isArray(datasets) ? datasets : [].slice.call(arguments, 1);
                 o = o || {};
-                www = WWW(o.classNames);
+                var id = $(this).attr("id");
+                www = WWW(o.classNames, id);
                 return this.each(attach);
                 function attach() {
                     var $input, $wrapper, $hint, $menu, defaultHint, defaultMenu, eventBus, input, menu, status, typeahead, MenuConstructor;
